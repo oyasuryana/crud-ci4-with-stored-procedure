@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2023 at 02:22 PM
+-- Generation Time: Sep 15, 2023 at 02:20 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -21,85 +21,18 @@ SET time_zone = "+00:00";
 -- Database: `db_spp`
 --
 
-DELIMITER $$
+-- --------------------------------------------------------
+
 --
--- Procedures
+-- Stand-in structure for view `data_siswa_kelas`
+-- (See below for the actual view)
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ambil_kelas` ()   BEGIN
-SELECT * FROM tbl_kelas;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ambil_tarif` ()   BEGIN
-	SELECT * from tbl_spp;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ambil_walikelas` ()   BEGIN
-SELECT * from tbl_walikelas;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cari_nama` (IN `namanya` VARCHAR(100))   BEGIN
- 	   SELECT * FROM tbl_siswa WHERE nama LIKE '%namanya%';   
-	END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cari_siswa` (IN `noInduk` CHAR(6))   BEGIN 
-SELECT  tbl_siswa.nis,tbl_siswa.nama,tbl_siswa.tempat_lahir,
-tbl_siswa.tgl_lahir,tbl_siswa.id_kelas,tbl_siswa.id_spp,
-		tbl_kelas.nama_kelas,        
-		tbl_walikelas.nama_walikelas,
-        tbl_spp.tarif_spp
-FROM 	tbl_siswa
-LEFT JOIN 	tbl_kelas ON tbl_kelas.id_kelas=tbl_siswa.id_kelas
-LEFT JOIN 	tbl_spp on tbl_spp.id_spp=tbl_siswa.id_spp
-LEFT JOIN	tbl_walikelas ON tbl_walikelas.nip_walikelas=tbl_kelas.nip_walikelas
- WHERE tbl_siswa.nis = noInduk;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_hapus_siswa` (IN `noInduk` CHAR(6))   BEGIN
-	
-		DELETE FROM tbl_siswa WHERE nis = noInduk;
-	
-	
-	END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insert_siswa` (IN `nisNya` CHAR(6), IN `namaNya` VARCHAR(100), IN `tempatNya` VARCHAR(100), IN `tanggalNya` DATE, IN `kelasNya` SMALLINT, IN `tarifNya` SMALLINT)   BEGIN
-INSERT INTO tbl_siswa (nis,nama,tempat_lahir,tgl_lahir,id_kelas,id_spp)VALUES (nisNya,namaNya,tempatNya,tanggalNya,kelasNya,tarifNya);
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insert_wk` (IN `nipnya` CHAR(5), `namanya` VARCHAR(100))   BEGIN
-			SET @pesan ='Data walikelas berhasil disimpan';
-			INSERT INTO tbl_walikelas VALUES (nipnya,namanya);
-			SELECT @pesan as Pesan;
-	END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_siswa` (IN `nisNya` CHAR(6), IN `namaNya` VARCHAR(100), IN `tempatNya` VARCHAR(100), IN `tglNya` DATE, IN `kelasNya` SMALLINT, IN `tarifNya` SMALLINT)   BEGIN
-	UPDATE tbl_siswa SET nama=namaNya, tempat_lahir=tempatNya,tgl_lahir=tglNya,id_kelas=kelasNya,id_spp=tarifNya
-    WHERE nis=nisNya;
-
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_walikelas` (IN `nipNya` CHAR(5), `namaNya` VARCHAR(100))   BEGIN
-INSERT INTO tbl_walikelas VALUES(nipNya , namaNya );
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `tampil_siswa` ()   BEGIN
-SELECT  tbl_siswa.nis,tbl_siswa.nama,tbl_siswa.tempat_lahir,
-tbl_siswa.tgl_lahir,tbl_siswa.id_kelas,tbl_siswa.id_spp,
-		tbl_kelas.nama_kelas,        
-		tbl_walikelas.nama_walikelas,
-        tbl_spp.tarif_spp
-FROM 	tbl_siswa
-LEFT JOIN 	tbl_kelas ON tbl_kelas.id_kelas=tbl_siswa.id_kelas
-LEFT JOIN 	tbl_spp on tbl_spp.id_spp=tbl_siswa.id_spp
-LEFT JOIN	tbl_walikelas ON tbl_walikelas.nip_walikelas=tbl_kelas.nip_walikelas
-ORDER BY tbl_siswa.nis;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_walikelas` (IN `nipNya` CHAR(5), `namaNya` VARCHAR(100))   BEGIN
-UPDATE tbl_walikelas SET nama_walikelas=namaNya  WHERE 
-nip_walikelas=nipNya;
-END$$
-
-DELIMITER ;
+CREATE TABLE `data_siswa_kelas` (
+`nis` char(6)
+,`nama` varchar(100)
+,`nama_kelas` varchar(10)
+,`nama_walikelas` varchar(100)
+);
 
 -- --------------------------------------------------------
 
@@ -243,6 +176,8 @@ INSERT INTO `tbl_walikelas` (`nip_walikelas`, `nama_walikelas`) VALUES
 ('23010', 'Agus Wahyudin'),
 ('23011', 'Irwan Muliarso'),
 ('23012', 'Dedi Sunardih');
+
+-- --------------------------------------------------------
 
 --
 -- Indexes for dumped tables
