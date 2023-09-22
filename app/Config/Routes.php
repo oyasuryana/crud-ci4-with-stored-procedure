@@ -5,7 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Siswa::index');
+$routes->get('/', 'Siswa::index'); 
+
 $routes->get('/list-siswa', 'Siswa::tampilSiswa');
 
 $routes->get('/hapus-siswa/(:num)', 'Siswa::hapus/$1');
